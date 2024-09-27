@@ -1,0 +1,13 @@
+.form-field {
+    display: flex;
+    flex-direction: column;
+    margin: 10px 0;
+
+    .p-dropdown, .p-inputnumber {
+        width: 100%;
+    }
+}
+
+.margin {
+    margin-top: 0.5em !important; /* Adjust the margin as needed */
+}

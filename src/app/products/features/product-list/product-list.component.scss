@@ -1,0 +1,22 @@
+.form-field {
+    display: flex;
+    flex-direction: column;
+    margin: 10px 0;
+
+    .p-dropdown, .p-inputnumber {
+        width: 100%;
+    }
+}
+
+.product-list-container {
+    max-height: 80vh; 
+    overflow-y: auto; 
+    padding-bottom: 12em;
+  }
+
+  .readonly-button {
+    pointer-events: none; 
+    opacity: 1; 
+    border: none; 
+    cursor: default; 
+}

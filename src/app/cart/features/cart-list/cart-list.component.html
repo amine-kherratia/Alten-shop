@@ -1,0 +1,33 @@
+<h1 class="text-center">Cart</h1>
+
+<p-dataView #dv [value]="cartItems()">
+    <ng-template pTemplate="list" let-items>
+        @for (item of items; track item) {
+            <p-card class="block mb-2">
+                <img [src]="item.image" alt="{{ item.name }}" class="product-image" />
+                <div class="text-lg font-medium text-900 mt-2">{{ item.name }}</div>
+                <div>Prix : {{ item.price | currency }}</div>
+
+                <div class="flex align-items-center mt-2">
+                    <p-button icon="pi pi-minus" (onClick)="updateCartQuantity(item.id, item.quantity - 1)" [disabled]="item.quantity <= 1"></p-button>
+                    <span class="mx-2 font-medium">{{ item.quantity }}</span>
+                    <p-button icon="pi pi-plus" (onClick)="updateCartQuantity(item.id, item.quantity + 1)"></p-button>
+                </div>
+
+                <ng-template pTemplate="footer">
+                    <div class="flex gap-3 mt-1">
+                        <p-button label="Retirer" severity="danger" (onClick)="removeFromCart(item.id)" />
+                    </div>
+                </ng-template>
+            </p-card>
+        }
+    </ng-template>
+</p-dataView>
+
+<div *ngIf="totalQuantity > 0" class="p-mt-3">
+    <h3>Total Quantité: {{ totalQuantity }}</h3>
+</div>
+
+<div *ngIf="cartItems().length === 0" class="text-center">
+    <h2>Votre panier est vide</h2>
+</div>

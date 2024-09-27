@@ -1,0 +1,78 @@
+<h1 class="text-center">Liste des produits</h1>
+
+<p-button label="Créer produit" (onClick)="onCreate()" class="block text-center"/>
+<p-paginator 
+    (onPageChange)="onPageChange($event)" 
+    [first]="first"
+    [rows]="rows" 
+    [totalRecords]="totalRecords" 
+    [rowsPerPageOptions]="[10, 20, 30]" />
+
+    <div class="p-inputgroup mb-4 w-max">
+        <input type="text" pInputText placeholder="Rechercher un produit..." [(ngModel)]="filterValue" (ngModelChange)="filterProducts()" />
+        <button   pButton type="button" class="readonly-button" icon="pi pi-search"></button>
+    </div>
+    
+    <div class="product-list-container">
+        <p-dataView #dv [value]="filteredProducts">
+            <ng-template pTemplate="list" let-products>
+                @for (product of products; track product) {
+                    <p-card class="block mb-2">
+                        <span class="font-medium text-secondary text-sm">{{ product.category }}</span>
+                        <div class="text-lg font-medium text-900 mt-2">{{ product.name }}</div>
+                        <div>Prix : {{ product.price | currency }}</div>
+                        <div>Description : {{ product.description }}</div>
+                        <div>État : {{ product.inventoryStatus }}</div>
+                        <div>Évaluation : {{ product.rating }} ⭐</div>
+      
+                        <ng-template pTemplate="footer">
+                            <div class="flex gap-3 mt-1">
+                                <ng-container *ngIf="isInCart(product); else addToCartTemplate">
+                                    <p-button 
+                                        icon="pi pi-minus" 
+                                        [disabled]="product.quantity <= 1 || product.inventoryStatus === 'OUTOFSTOCK'"
+                                        severity="warning" 
+                                        (onClick)="onDecreaseQuantity(product)" 
+                                    />
+                                    <div class="flex align-items-center">
+                                        <span class="font-medium">{{ getCartQuantity(product) }}</span>
+                                    </div>
+                                    <p-button 
+                                        icon="pi pi-plus" 
+                                        [disabled]="product.inventoryStatus === 'OUTOFSTOCK'"
+                                        severity="primary" 
+                                        (onClick)="onIncreaseQuantity(product)" 
+                                    />
+                                </ng-container>
+      
+                                <ng-template #addToCartTemplate>
+                                    <p-button 
+                                        icon="pi pi-cart-plus" 
+                                        [disabled]="product.inventoryStatus === 'OUTOFSTOCK'" 
+                                        severity="success" 
+                                        (onClick)="onAddToCart(product)" 
+                                    />
+                                </ng-template>
+      
+                                <p-button label="Modifier" severity="secondary" (onClick)="onUpdate(product)" />
+                                <p-button label="Supprimer" severity="danger" (onClick)="onDelete(product)" />
+                            </div>
+                        </ng-template>
+                    </p-card>
+                }
+            </ng-template>
+        </p-dataView>
+      </div>
+      
+
+
+  
+<p-dialog [(visible)]="isDialogVisible"
+    [style]="{ width: '50vw' }"
+    header="Ajout/Edition produit">
+    <app-product-form
+        [product]="editedProduct()"
+        (save)="onSave($event)"
+        (cancel)="onCancel()"
+    />
+</p-dialog>
