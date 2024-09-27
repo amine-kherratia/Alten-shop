@@ -15,25 +15,23 @@ export class CartService {
   }
 
   public getCartItemCount() {
-    return this.cartItemCount.asObservable(); // Return the observable
+    return this.cartItemCount.asObservable();
   }
   
   public addToCart(product: Product) {
     const existingItem = this._cartItems().find(item => item.id === product.id);
     if (existingItem) {
-      // If the item already exists, update its quantity
       this.updateCartQuantity(product.id, existingItem.quantity + 1);
     } else {
-      // If it doesn't exist, add it to the cart
       const cartProduct = { ...product, quantity: 1 };
       this._cartItems.update(items => [...items, cartProduct]);
     }
-    this.cartItemCount.next(this.getTotalQuantity()); // Emit new count
+    this.cartItemCount.next(this.getTotalQuantity());
   }
 
   public removeFromCart(productId: number) {
     this._cartItems.update(items => items.filter(item => item.id !== productId));
-    this.cartItemCount.next(this.getTotalQuantity()); // Emit new count
+    this.cartItemCount.next(this.getTotalQuantity());
   }
 
   public updateCartQuantity(productId: number, quantity: number) {
@@ -42,7 +40,7 @@ export class CartService {
         item.id === productId ? { ...item, quantity } : item
       )
     );
-    this.cartItemCount.next(this.getTotalQuantity()); // Emit new count
+    this.cartItemCount.next(this.getTotalQuantity());
   }
 
 

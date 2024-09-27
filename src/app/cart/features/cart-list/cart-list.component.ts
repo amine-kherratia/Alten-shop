@@ -32,9 +32,9 @@ export class CartComponent {
 
   public updateCartQuantity(productId: number, quantity: number) {
     if (quantity < 1) {
-        this.removeFromCart(productId); // Retirer le produit si la quantité devient 0
+        this.removeFromCart(productId);
     } else {
-        this.cartService.updateCartQuantity(productId, quantity); // Appeler le service pour mettre à jour la quantité
+        this.cartService.updateCartQuantity(productId, quantity); 
     }
 }
 }

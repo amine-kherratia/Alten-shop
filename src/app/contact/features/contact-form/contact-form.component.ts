@@ -34,7 +34,6 @@ export class ContactFormComponent  {
 
   onSubmit() {
     if (this.contactForm.valid) {
-      // Logic to send the contact message goes here
       this.successMessage = true;
       this.contactForm.reset();
     }
