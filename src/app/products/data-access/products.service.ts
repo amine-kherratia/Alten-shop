@@ -1,4 +1,4 @@
-import { Injectable, inject, signal } from "@angular/core";
+import { Injectable, Signal, inject, signal } from "@angular/core";
 import { Product } from "./product.model";
 import { HttpClient } from "@angular/common/http";
 import { catchError, Observable, of, tap } from "rxjs";
@@ -13,6 +13,10 @@ import { catchError, Observable, of, tap } from "rxjs";
     private readonly _products = signal<Product[]>([]);
 
     public readonly products = this._products.asReadonly();
+
+    public get productsObservable(): Signal<Product[]> {
+        return this._products.asReadonly(); // Retourne un Observable basé sur le signal
+    }
 
     public get(): Observable<Product[]> {
         return this.http.get<Product[]>(this.path).pipe(

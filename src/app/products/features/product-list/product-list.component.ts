@@ -56,33 +56,36 @@ export class ProductListComponent implements OnInit {
   }
 
   loadProducts() {
-    this.productsService.get().subscribe((data) => {
-      this.fullFilteredProducts = data;
-      this.productslist = data;
-      this.totalRecords = this.fullFilteredProducts.length;
-      this.filterProducts();
+    this.productsService.get().subscribe(() => {
+      this.updateProductList();
     });
   }
 
-  filterProducts() {
-    if (this.filterValue.trim() === '') {
-        this.filteredProducts = this.productslist; 
-    } else {
+  updateProductList() {
+    this.productslist = this.productsService.products(); // Récupérez directement la liste des produits
+    this.applyFilters();
+  }
 
-        this.fullFilteredProducts = this.productslist.filter(product =>
-            product.name.toLowerCase().includes(this.filterValue.toLowerCase()) ||
-            product.category.toLowerCase().includes(this.filterValue.toLowerCase())
-        );
-        this.filteredProducts = this.fullFilteredProducts;
-    }
+  applyFilters() {
+    this.filteredProducts = this.filterValue.trim() === ''
+      ? [...this.productslist]
+      : this.productslist.filter(product => this.filterProduct(product));
 
+    this.fullFilteredProducts = [...this.filteredProducts];
     this.totalRecords = this.filteredProducts.length; 
-    this.paginate({ first: this.first, rows: this.rows }); 
-}
+    this.first = 0; 
+    this.paginate({ first: this.first, rows: this.rows });
+  }
+
+  filterProduct(product: Product): boolean {
+    const searchValue = this.filterValue.toLowerCase();
+    return product.name.toLowerCase().includes(searchValue) || 
+           product.category.toLowerCase().includes(searchValue);
+  }
 
   paginate(event: { first: number; rows: number }) {
     this.first = event.first;
-    const start = event.first;
+    const start = this.first;
     const end = start + event.rows;
     this.filteredProducts = this.fullFilteredProducts.slice(start, end);
   }
@@ -130,17 +133,18 @@ export class ProductListComponent implements OnInit {
   }
 
   public onDelete(product: Product) {
-    this.productsService.delete(product.id).subscribe();
+    this.productsService.delete(product.id).subscribe(() => {
+      this.updateProductList();
+    });
     this.cartService.removeFromCart(product.id);
   }
 
   public onSave(product: Product) {
-    if (this.isCreation) {
-      this.productsService.create(product).subscribe();
-    } else {
-      this.productsService.update(product).subscribe();
-    }
-    this.closeDialog();
+    const saveAction = this.isCreation ? this.productsService.create(product) : this.productsService.update(product);
+    saveAction.subscribe(() => {
+      this.updateProductList();
+      this.closeDialog();
+    });
   }
 
   public onCancel() {

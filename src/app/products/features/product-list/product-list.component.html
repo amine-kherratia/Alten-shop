@@ -9,7 +9,7 @@
     [rowsPerPageOptions]="[10, 20, 30]" />
 
     <div class="p-inputgroup mb-4 w-max">
-        <input type="text" pInputText placeholder="Rechercher un produit..." [(ngModel)]="filterValue" (ngModelChange)="filterProducts()" />
+        <input type="text" pInputText placeholder="Rechercher un produit..." [(ngModel)]="filterValue" (ngModelChange)="applyFilters()" />
         <button   pButton type="button" class="readonly-button" icon="pi pi-search"></button>
     </div>
     
