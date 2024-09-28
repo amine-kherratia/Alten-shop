@@ -56,13 +56,17 @@ export class ProductListComponent implements OnInit {
   }
 
   loadProducts() {
-    this.productsService.get().subscribe(() => {
+    if (this.productsService.products().length === 0) {
+      this.productsService.get().subscribe(() => {
+        this.updateProductList();
+      });
+    } else {
       this.updateProductList();
-    });
+    }
   }
 
   updateProductList() {
-    this.productslist = this.productsService.products(); // Récupérez directement la liste des produits
+    this.productslist = this.productsService.products();
     this.applyFilters();
   }
 
