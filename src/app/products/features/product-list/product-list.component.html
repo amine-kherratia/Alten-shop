@@ -8,10 +8,10 @@
     [totalRecords]="totalRecords" 
     [rowsPerPageOptions]="[10, 20, 30]" />
 
-    <div class="p-inputgroup mb-4 w-max">
+    <div class="p-inputgroup mb-4 p-4">
         <input type="text" pInputText placeholder="Rechercher un produit..." [(ngModel)]="filterValue" (ngModelChange)="applyFilters()" />
-        <button   pButton type="button" class="readonly-button" icon="pi pi-search"></button>
     </div>
+    
     
     <div class="product-list-container">
         <p-dataView #dv [value]="filteredProducts">
@@ -30,7 +30,7 @@
                                 <ng-container *ngIf="isInCart(product); else addToCartTemplate">
                                     <p-button 
                                         icon="pi pi-minus" 
-                                        [disabled]="product.quantity <= 1 || product.inventoryStatus === 'OUTOFSTOCK'"
+                                        [disabled]="product.inventoryStatus === 'OUTOFSTOCK' || getCartQuantity(product) <= 1"
                                         severity="warning" 
                                         (onClick)="onDecreaseQuantity(product)" 
                                     />

@@ -1,40 +1,43 @@
-<h1>Contactez-nous</h1>
+<div class="contact-form">
+  <h1>Contactez-nous</h1>
 
-<div class="p-fluid p-formgrid p-grid">
-    <form [formGroup]="contactForm" (ngSubmit)="onSubmit()" class="p-col-12">
-      <div class="form-field p-col-12 p-md-6">
-        <label for="email">Email</label>
-        <input pInputText
-          class="margin"
-          id="email"
-          formControlName="email"
-          required />
-        <div *ngIf="contactForm.get('email')?.invalid && (contactForm.get('email')?.touched || contactForm.get('email')?.dirty)">
-          <small class="p-error" *ngIf="contactForm.get('email')?.errors?.required">Email est requis.</small>
-          <small class="p-error" *ngIf="contactForm.get('email')?.errors?.email">Email invalide.</small>
+  <div class="p-fluid p-formgrid p-grid">
+      <form [formGroup]="contactForm" (ngSubmit)="onSubmit()" class="p-col-12">
+        <div class="form-field p-col-12 p-md-6">
+          <label for="email">Email</label>
+          <input pInputText
+            class="margin"
+            id="email"
+            formControlName="email"
+            required />
+          <div *ngIf="contactForm.get('email')?.invalid && (contactForm.get('email')?.touched || contactForm.get('email')?.dirty)">
+            <small class="p-error" *ngIf="contactForm.get('email')?.errors?.required">Email est requis.</small>
+            <small class="p-error" *ngIf="contactForm.get('email')?.errors?.email">Email invalide.</small>
+          </div>
         </div>
-      </div>
-  
-      <div class="form-field p-col-12 p-md-6">
-        <label for="message">Message</label>
-        <textarea pInputTextarea 
-          id="message"
-          class="margin"
-          rows="5" 
-          formControlName="message"
-          required></textarea>
-        <div *ngIf="contactForm.get('message')?.invalid && (contactForm.get('message')?.touched || contactForm.get('message')?.dirty)">
-          <small class="p-error" *ngIf="contactForm.get('message')?.errors?.required">Message est requis.</small>
-          <small class="p-error" *ngIf="contactForm.get('message')?.errors?.maxlength">Le message doit contenir au maximum 300 caractères.</small>
+    
+        <div class="form-field p-col-12 p-md-6">
+          <label for="message">Message</label>
+          <textarea pInputTextarea 
+            id="message"
+            class="margin"
+            rows="5" 
+            formControlName="message"
+            required></textarea>
+          <div *ngIf="contactForm.get('message')?.invalid && (contactForm.get('message')?.touched || contactForm.get('message')?.dirty)">
+            <small class="p-error" *ngIf="contactForm.get('message')?.errors?.required">Message est requis.</small>
+            <small class="p-error" *ngIf="contactForm.get('message')?.errors?.maxlength">Le message doit contenir au maximum 300 caractères.</small>
+          </div>
         </div>
-      </div>
+    
+        <div class="flex justify-content-between p-col-12">
+          <p-button type="submit" [disabled]="contactForm.invalid" label="Envoyer" severity="success"/>
+        </div>
+      </form>
+    </div>
+    
+    
   
-      <div class="flex justify-content-between p-col-12">
-        <p-button type="submit" [disabled]="contactForm.invalid" label="Envoyer" severity="success"/>
-      </div>
-    </form>
-  </div>
+  <p-message *ngIf="successMessage" severity="success" text="Demande de contact envoyée avec succès." class="p-mt-3"></p-message>
   
-  
-
-<p-message *ngIf="successMessage" severity="success" text="Demande de contact envoyée avec succès." class="p-mt-3"></p-message>
+</div>

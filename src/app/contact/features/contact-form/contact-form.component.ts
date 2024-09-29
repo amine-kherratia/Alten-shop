@@ -7,6 +7,8 @@ import { DialogModule } from 'primeng/dialog';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MessageModule } from 'primeng/message';
+import { InputNumberModule } from "primeng/inputnumber";
+import { InputTextModule } from "primeng/inputtext";
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { ReactiveFormsModule } from '@angular/forms';
 
@@ -15,7 +17,7 @@ import { ReactiveFormsModule } from '@angular/forms';
   templateUrl: "./contact-form.component.html",
   styleUrls: ["./contact-form.component.scss"],
   standalone: true,
-  imports: [DataViewModule,CommonModule, CardModule, ButtonModule, DialogModule, MessageModule, InputTextareaModule,ReactiveFormsModule],
+  imports: [DataViewModule,CommonModule, InputTextModule, InputNumberModule, CardModule, ButtonModule, DialogModule, MessageModule, InputTextareaModule,ReactiveFormsModule],
 })
 export class ContactFormComponent  {
   contactForm: FormGroup;

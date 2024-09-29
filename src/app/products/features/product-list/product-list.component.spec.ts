@@ -51,13 +51,18 @@ describe('ProductListComponent', () => {
     expect(component).toBeTruthy();
   });
 
-
   it('should call onCreate and open dialog', () => {
+    const fixedTimestamp = 1234567890;
+  
+    const originalDateNow = Date.now;
+    spyOn(Date, 'now').and.returnValue(fixedTimestamp);
+  
     component.onCreate();
+  
     expect(component.isCreation).toBe(true);
     expect(component.isDialogVisible).toBe(true);
     expect(component.editedProduct()).toEqual({
-      id: 0,
+      id: fixedTimestamp,
       code: '',
       name: '',
       description: '',
@@ -72,6 +77,7 @@ describe('ProductListComponent', () => {
       createdAt: 0,
       updatedAt: 0,
     });
+    Date.now = originalDateNow;
   });
 
   it('should add product to cart', () => {

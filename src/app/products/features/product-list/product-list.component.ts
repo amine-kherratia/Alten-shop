@@ -10,6 +10,7 @@ import { CommonModule } from '@angular/common';
 import { CartService } from "app/cart/data-access/cart.service";
 import { FormsModule } from "@angular/forms";
 import { PaginatorModule } from 'primeng/paginator';
+import { InputTextModule } from "primeng/inputtext";
 
 const emptyProduct: Product = {
   id: 0,
@@ -33,12 +34,12 @@ const emptyProduct: Product = {
   templateUrl: "./product-list.component.html",
   styleUrls: ["./product-list.component.scss"],
   standalone: true,
-  imports: [DataViewModule, CommonModule, PaginatorModule, CardModule, FormsModule, ButtonModule, DialogModule, ProductFormComponent],
+  imports: [DataViewModule, CommonModule, InputTextModule, PaginatorModule, CardModule, FormsModule, ButtonModule, DialogModule, ProductFormComponent],
 })
 export class ProductListComponent implements OnInit {
   private readonly productsService = inject(ProductsService);
   private readonly cartService = inject(CartService);
-  public readonly products = this.productsService.products;
+
   public isDialogVisible = false;
   filterValue: string = '';
   public isCreation = false;
@@ -56,12 +57,22 @@ export class ProductListComponent implements OnInit {
   }
 
   loadProducts() {
-    if (this.productsService.products().length === 0) {
+    const products = this.productsService.products;
+  
+    const loadFromService = () => {
       this.productsService.get().subscribe(() => {
         this.updateProductList();
       });
+    };
+  
+    if (typeof products === 'function') {
+      if (products().length === 0) {
+        loadFromService();
+      } else {
+        this.updateProductList();
+      }
     } else {
-      this.updateProductList();
+      loadFromService();
     }
   }
 
@@ -103,7 +114,8 @@ export class ProductListComponent implements OnInit {
   public onCreate() {
     this.isCreation = true;
     this.isDialogVisible = true;
-    this.editedProduct.set(emptyProduct);
+    emptyProduct.id =  Date.now();
+    this.editedProduct.set({ ...emptyProduct }); 
   }
 
   public onAddToCart(product: Product) {
@@ -133,7 +145,7 @@ export class ProductListComponent implements OnInit {
   public onUpdate(product: Product) {
     this.isCreation = false;
     this.isDialogVisible = true;
-    this.editedProduct.set(product);
+    this.editedProduct.set({ ...product }); 
   }
 
   public onDelete(product: Product) {
@@ -146,6 +158,9 @@ export class ProductListComponent implements OnInit {
   public onSave(product: Product) {
     const saveAction = this.isCreation ? this.productsService.create(product) : this.productsService.update(product);
     saveAction.subscribe(() => {
+      if (!this.isCreation) {
+        this.cartService.updateCartProduct(product);
+      }
       this.updateProductList();
       this.closeDialog();
     });

@@ -34,6 +34,15 @@ export class CartService {
     this.cartItemCount.next(this.getTotalQuantity());
   }
 
+  public updateCartProduct(updatedProduct: Product) {
+    this._cartItems.update(items =>
+      items.map(item =>
+        item.id === updatedProduct.id ? { ...item, ...updatedProduct, quantity: item.quantity } : item
+      )
+    );
+    this.cartItemCount.next(this.getTotalQuantity());
+  }
+
   public updateCartQuantity(productId: number, quantity: number) {
     this._cartItems.update(items =>
       items.map(item =>

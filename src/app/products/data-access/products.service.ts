@@ -13,7 +13,7 @@ import { catchError, Observable, of, tap } from "rxjs";
     private readonly _products = signal<Product[]>([]);
 
     public readonly products = this._products.asReadonly();
-
+    
 
     public get(): Observable<Product[]> {
         return this.http.get<Product[]>(this.path).pipe(

@@ -4,7 +4,7 @@
     <ng-template pTemplate="list" let-items>
         @for (item of items; track item) {
             <p-card class="block mb-2">
-                <img [src]="item.image" alt="{{ item.name }}" class="product-image" />
+                <img [src]="item.image" class="product-image" />
                 <div class="text-lg font-medium text-900 mt-2">{{ item.name }}</div>
                 <div>Prix : {{ item.price | currency }}</div>
 

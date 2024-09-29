@@ -14,6 +14,7 @@ import { DropdownModule } from "primeng/dropdown";
 import { InputNumberModule } from "primeng/inputnumber";
 import { InputTextModule } from "primeng/inputtext";
 import { InputTextareaModule } from 'primeng/inputtextarea';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: "app-product-form",
@@ -70,6 +71,7 @@ import { InputTextareaModule } from 'primeng/inputtextarea';
     InputNumberModule,
     InputTextareaModule,
     DropdownModule,
+    CommonModule
   ],
   encapsulation: ViewEncapsulation.None
 })
@@ -87,6 +89,7 @@ export class ProductFormComponent {
     { value: "Clothing", label: "Clothing" },
     { value: "Electronics", label: "Electronics" },
   ];
+
 
   onCancel() {
     this.cancel.emit();
